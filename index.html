@@ -11,8 +11,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="终端主页 — terminal homepage" />
   <meta property="og:description" content="ls 看项目 · cd 进仓库 · 闲置 5 秒，背景自己打一局" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/images/site-icon.png" type="image/png" sizes="112x112" />
+  <link rel="shortcut icon" href="assets/images/favicon.ico" />
+  <link rel="apple-touch-icon" href="assets/images/site-icon.png" />
   <link rel="stylesheet" href="assets/css/terminal.css" />
+  <link rel="stylesheet" href="assets/css/pixel-desktop.css" />
   <script>
     /* 在首帧之前定好主题，避免闪白 */
     (function () {
@@ -27,10 +30,16 @@
 </head>
 <body>
   <a class="skip-link" href="#cmd">跳到命令行</a>
-  <canvas class="arcade" id="arcade" width="256" height="224" aria-hidden="true"></canvas>
+  <div class="pixel-wallpaper" aria-hidden="true"></div>
   <div class="backdrop" aria-hidden="true"></div>
+  <div class="desktop-bar">
+    <a class="desktop-brand" href="#" aria-label="回到主页"><img src="assets/images/site-icon.png" width="24" height="24" alt="" /> terminal desktop</a>
+    <span class="desktop-status"><span aria-hidden="true">◆</span> PERSONAL SPACE / ONLINE</span>
+  </div>
 
+  <div class="desktop-layout">
   <main class="wrap">
+    <div class="window-bar"><span class="window-title"><img src="assets/images/site-icon.png" width="18" height="18" alt="" /> home / terminal</span><span class="window-marks" aria-hidden="true">─ □ ×</span></div>
     <header class="banner">
       <p class="banner__eyebrow">
         <span class="banner__tilde">~/</span><span id="banner-host">terminal</span>
@@ -63,6 +72,21 @@
       <span>点项目名直接进入</span>
     </p>
   </main>
+
+  <aside class="desktop-side" aria-label="像素桌面">
+    <section class="pixel-window portrait-window">
+      <div class="window-bar"><span>github / avatar</span><span aria-hidden="true">□</span></div>
+      <div class="portrait-stage"><img id="github-avatar" src="https://avatars.githubusercontent.com/u/117635601?v=4" alt="xlxDH 的 GitHub 头像" width="256" height="256" /></div>
+      <p class="window-caption"><span class="status-dot" aria-hidden="true"></span> a little corner of my world</p>
+    </section>
+    <section class="pixel-window arcade-window" aria-label="闲置时自动玩的像素游戏">
+      <div class="window-bar"><span>arcade.exe</span><span aria-hidden="true">◇</span></div>
+      <canvas class="arcade" id="arcade" width="256" height="224" aria-hidden="true"></canvas>
+      <p class="window-caption">5 秒闲置 · 自动开局</p>
+    </section>
+    <p class="desktop-note">MAKE YOURSELF AT HOME<span>输入 help，随便逛逛。</span></p>
+  </aside>
+  </div>
 
   <div class="chrome">
     <button class="chrome__btn" id="theme-btn" type="button" aria-label="切换深浅色主题" title="切换主题">

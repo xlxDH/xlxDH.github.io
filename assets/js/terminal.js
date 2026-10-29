@@ -190,6 +190,11 @@
   const bannerHost = $('#banner-host');
   const bannerGh = $('#banner-gh');
   const bannerLinks = $('#banner-links');
+  const githubAvatar = $('#github-avatar');
+  if (githubAvatar) {
+    githubAvatar.src = PROFILE.avatar || `https://github.com/${encodeURIComponent(USER)}.png?size=256`;
+    githubAvatar.alt = `${USER} 的 GitHub 头像`;
+  }
 
   if (!out || !input || !form) return;
 
@@ -654,12 +659,36 @@
 
   function parse(text) {
     const parts = [];
-    const regex = /"([^"]*)"|'([^']*)'|(\S+)/g;
-    let match = regex.exec(text);
-    while (match !== null) {
-      parts.push(match[1] !== undefined ? match[1] : match[2] !== undefined ? match[2] : match[3]);
-      match = regex.exec(text);
+    let token = '';
+    let quote = '';
+    let started = false;
+    const source = String(text);
+
+    for (let i = 0; i < source.length; i += 1) {
+      const char = source[i];
+      if (char === '\\' && i + 1 < source.length && (quote !== "'" || source[i + 1] === "'")) {
+        token += source[i + 1];
+        i += 1;
+        started = true;
+      } else if (quote) {
+        if (char === quote) quote = '';
+        else token += char;
+      } else if (char === '"' || char === "'") {
+        quote = char;
+        started = true;
+      } else if (/\s/.test(char)) {
+        if (started) {
+          parts.push(token);
+          token = '';
+          started = false;
+        }
+      } else {
+        token += char;
+        started = true;
+      }
     }
+
+    if (started) parts.push(token);
     return { name: parts[0] || '', args: parts.slice(1) };
   }
 

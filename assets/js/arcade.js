@@ -173,10 +173,9 @@
 
   /* ---------------------------------------------------------------- 尺寸 */
   function resize() {
-    const fit = Math.min(window.innerWidth / W, window.innerHeight / H);
-    const scale = fit >= 2 ? Math.floor(fit) : fit;
-    canvas.style.width = `${Math.round(W * scale)}px`;
-    canvas.style.height = `${Math.round(H * scale)}px`;
+    // The desktop window supplies the width; keep the original pixel aspect ratio.
+    canvas.style.width = '100%';
+    canvas.style.height = 'auto';
   }
 
   resize();
@@ -1152,21 +1151,30 @@
     if (state.mode === 'over') drawOver(now, p);
   }
 
+  const FRAME_MS = 1000 / 25;
   let last = performance.now();
+  let elapsed = 0;
   let playingClass = false;
 
   function tick(now) {
-    const dt = Math.min(now - last, 60);
+    const delta = Math.max(0, now - last);
     last = now;
-    /* 手机上画布是隐藏的，offsetWidth 为 0，直接跳过省电 */
-    if (!document.hidden && canvas.offsetWidth > 0) {
-      if (!state.paused) update(now, dt);
-      const playing = state.mode === 'play' || state.mode === 'over';
-      if (playing !== playingClass) {
-        playingClass = playing;
-        canvas.classList.toggle('is-playing', playing);
+    if (document.hidden || canvas.offsetWidth === 0) {
+      elapsed = 0;
+    } else {
+      // Preserve the fractional remainder on 60/120/144 Hz displays. Long stalls
+      // drop missed frames instead of running a burst of catch-up updates.
+      elapsed += Math.min(delta, FRAME_MS);
+      if (elapsed + 0.001 >= FRAME_MS) {
+        elapsed = Math.max(0, elapsed - FRAME_MS);
+        if (!state.paused) update(now, FRAME_MS);
+        const playing = state.mode === 'play' || state.mode === 'over';
+        if (playing !== playingClass) {
+          playingClass = playing;
+          canvas.classList.toggle('is-playing', playing);
+        }
+        render(now);
       }
-      render(now);
     }
     requestAnimationFrame(tick);
   }
@@ -1181,6 +1189,7 @@
       state.lastActivity = performance.now();
       state.nextStart = 0;
       last = performance.now();
+      elapsed = 0;
     }
   });
 

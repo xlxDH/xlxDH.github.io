@@ -1,7 +1,11 @@
 # Terminal Homepage
 
 终端风格的 GitHub 个人主页：`ls` 看项目，`cd` 进仓库，键盘和鼠标都能用。
-闲置 5 秒，背景还会亮起一台 FC 游戏机，自己挑游戏、自己打。
+像素桌面使用本地壁纸与头像素材；闲置 5 秒，右侧的 FC 游戏窗口会自己挑游戏、自己打，固定以 25 Hz 更新与绘制。
+
+素材统一放在 `assets/images/`：`wallpaper-source.jpg` 与 `portrait-source.png` 是重命名后的原图，`pixel-wallpaper.png` 与 `pixel-portrait.png` 是减色后的像素素材，`site-icon.png` 和 `favicon.ico` 用作站点图标。运行 `scripts/prepare-art.py` 可重新生成像素素材（需要 Pillow）。
+
+执行 `node scripts/check-arcade.mjs` 可验证不同屏幕刷新率下的 25 Hz 计时、后台恢复和三个游戏的运行情况。
 纯静态、零依赖、不需要构建，直接托管在 GitHub Pages 上。
 
 ![预览](docs/preview.png)

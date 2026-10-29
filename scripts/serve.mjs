@@ -41,7 +41,8 @@ const server = createServer(async (request, response) => {
     const target = path.join(ROOT, path.normalize(pathname));
 
     /* 防止 ../ 穿越 */
-    if (!target.startsWith(ROOT)) {
+    const relative = path.relative(ROOT, target);
+    if (relative.startsWith(`..${path.sep}`) || relative === '..' || path.isAbsolute(relative)) {
       response.writeHead(403).end('403');
       return;
     }
