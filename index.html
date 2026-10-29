@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>终端主页 — terminal homepage</title>
+  <meta name="description" content="终端风格的 GitHub 个人主页：ls 浏览项目，cd 进入仓库；闲置 5 秒，背景自动开一局 FC 游戏。" />
+  <meta name="author" content="terminal-homepage" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070b0a" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="终端主页 — terminal homepage" />
+  <meta property="og:description" content="ls 看项目 · cd 进仓库 · 闲置 5 秒，背景自己打一局" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/terminal.css" />
+  <script>
+    /* 在首帧之前定好主题，避免闪白 */
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search).get('theme');
+        var mode = (q === 'dark' || q === 'light' || q === 'auto') ? q : (localStorage.getItem('th.theme') || 'auto');
+        var light = window.matchMedia('(prefers-color-scheme: light)').matches;
+        document.documentElement.dataset.theme = mode === 'auto' ? (light ? 'light' : 'dark') : mode;
+      } catch (e) { /* 隐私模式下 localStorage 可能不可用，忽略 */ }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#cmd">跳到命令行</a>
+  <canvas class="arcade" id="arcade" width="256" height="224" aria-hidden="true"></canvas>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <header class="banner">
+      <p class="banner__eyebrow">
+        <span class="banner__tilde">~/</span><span id="banner-host">terminal</span>
+        <span class="banner__dot">·</span>
+        <a class="banner__repo" id="banner-gh" href="https://github.com" target="_blank" rel="noopener noreferrer">github ↗</a>
+      </p>
+      <h1 class="banner__title" id="banner-name">your name</h1>
+      <p class="banner__sub" id="banner-sub">终端风格的 GitHub 主页 · ls / cd 就能逛</p>
+      <nav class="banner__links" id="banner-links" aria-label="其他链接"></nav>
+    </header>
+
+    <div class="out" id="out" role="log" aria-live="polite" aria-relevant="additions" aria-label="终端输出"></div>
+
+    <form class="promptline" id="form" autocomplete="off" novalidate>
+      <label class="ps1" id="ps1" for="cmd"></label>
+      <div class="entry">
+        <span class="entry__text" aria-hidden="true"><span id="typed-before"></span><span id="typed-after"></span></span>
+        <span class="entry__caret" id="caret" aria-hidden="true"></span>
+        <input
+          class="entry__input" id="cmd" name="cmd" type="text"
+          autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+          enterkeyhint="send" aria-label="输入命令，例如 ls 或 help" />
+      </div>
+    </form>
+
+    <p class="hintbar" id="hintbar" aria-hidden="true">
+      <span><kbd>↑</kbd><kbd>↓</kbd> 历史</span>
+      <span><kbd>Tab</kbd> 补全</span>
+      <span><kbd>Ctrl</kbd>+<kbd>L</kbd> 清屏</span>
+      <span>点项目名直接进入</span>
+    </p>
+  </main>
+
+  <div class="chrome">
+    <button class="chrome__btn" id="theme-btn" type="button" aria-label="切换深浅色主题" title="切换主题">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+      </svg>
+    </button>
+  </div>
+
+  <noscript>
+    <p class="noscript">
+      这个主页依赖 JavaScript 才能交互。你也可以直接去
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> 看我的仓库。
+    </p>
+  </noscript>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data/projects.js"></script>
+  <script src="assets/js/arcade.js"></script>
+  <script src="assets/js/terminal.js"></script>
+</body>
+</html>

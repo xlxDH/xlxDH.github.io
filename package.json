@@ -1,0 +1,14 @@
+{
+  "name": "terminal-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "终端风格的 GitHub 个人主页：ls 浏览项目，cd 进入仓库，闲置时背景自己玩 FC 游戏",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "sync": "node scripts/sync-projects.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
