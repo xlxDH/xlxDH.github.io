@@ -14,7 +14,7 @@
 
 ![背景游戏机](docs/preview-arcade.png)
 
-> 截图用的是内置示例数据；换成真实仓库后是同样的版式。
+> 截图就是 xlxDH 的真实仓库数据。
 
 ---
 
@@ -24,7 +24,7 @@
 
 | 方案 | 手感 | 体积 / 依赖 | 维护成本 | 适合谁 |
 | --- | --- | --- | --- | --- |
-| **手写静态终端**（本项目） | 够像：提示符、光标、补全、历史都有 | 63 KB（gzip 后 18 KB），0 依赖 | 改一个 `config.js` | 想要干净、快、每一行都能自己改 |
+| **手写静态终端**（本项目） | 够像：提示符、光标、补全、历史都有 | 106 KB（gzip 后 30 KB），0 依赖 | 改一个 `config.js` | 想要干净、快、每一行都能自己改 |
 | xterm.js + local-echo | 真终端：ANSI、滚屏、光标移动 | 300 KB+，要打包 | 依赖长期升级 | 想做成 WebSSH 那种重度终端 |
 | 现成主题（Hugo / Jekyll 的 terminal 主题） | 看主题质量 | 要装生成器工具链 | 模板+主题两层配置 | 想顺便把博客一起搭了 |
 | React + 终端组件库 | 组件化 | 框架 + 依赖 | 中等 | 本来就在写 React |
@@ -42,11 +42,10 @@
 3. 仓库 **Settings → Pages → Source** 选 **GitHub Actions**，等第一次 Action 跑完，
    访问 `https://<你的用户名>.github.io`。
 
-首次部署用的是内置示例数据。想换成真实仓库：
+已经被 `xlxDH` 同步过一次（21 个仓库）。以后新增仓库可以手动刷新，或等 Action 每周自动跑：
 
 ```bash
-npm run sync -- <你的 GitHub 用户名>   # 生成 assets/js/data/projects.js
-git add -A && git commit -m "sync projects" && git push
+npm run sync -- xlxDH   # 重新生成 assets/js/data/projects.js
 ```
 
 （不需要 `npm install`，全项目没有任何依赖。）
@@ -127,6 +126,7 @@ links: { github: "", blog: "", x: "", zhihu: "", rss: "" },
 email: "",
 autoJump: true,      // cd 后自动开新标签
 autoLs: true,        // 首屏自动 ls
+autoLsLimit: 6,      // 首屏最多列几个（0 = 全部）
 theme: "auto",       // auto | dark | light
 promptUser: "visitor", // 访客默认名，login 之后会变
 arcade: true,        // 背景 FC 游戏机
@@ -188,8 +188,11 @@ LICENSE
 **会不会被弹窗拦截？**
 不会。跳转走的是 `<a target="_blank">` 的点击，属于页面导航，不是 `window.open`。
 
-**为什么首屏是示例数据？**
-`projects.js` 里 `demo: true`。跑一次 `npm run sync -- <user>` 后会被真实数据覆盖，提示也会消失。
+**新增了仓库但页面没更新？**
+`projects.js` 是构建期生成的，跑一次 `npm run sync -- xlxDH` 重新生成（或在 Actions 里手动触发一次 workflow）。
+
+**首屏为什么只列 6 个？**
+`config.js` 里的 `autoLsLimit` 控制，设 `0` 就一次列出全部；首屏少一点，标题和输入框才不会被顶出屏幕，完整的用 `ls` 看。
 
 **能自动认出访客的 GitHub 名字吗？**
 不能。没有 OAuth 就没有可信的身份来源，Referer 也只给 `github.com` 这个域名。

@@ -363,7 +363,7 @@
     );
 
     row.append(el('span', 'row__name', `${project.slug}/`));
-    row.append(el('span', 'row__desc', project.desc || '（没有描述）'));
+    row.append(el('span', 'row__desc', project.desc || '—'));
 
     const meta = el('span', 'row__meta');
     if (project.language) {
@@ -399,9 +399,15 @@
     if (stars) bits.push(`★ ${fmtNum(stars)}`);
     printLine(`~/  ${bits.join('  ·  ')}`, 'line--muted line--indent');
 
+    /* 首屏只铺前几个，免得把标题和输入框挤出屏幕；完整的用 ls 看 */
+    const shown = opts.limit ? list.slice(0, opts.limit) : list;
     const box = el('div', 'fs');
-    list.forEach((project) => box.append(projectRow(project, opts.long)));
+    shown.forEach((project) => box.append(projectRow(project, opts.long)));
     printBlock(box);
+
+    if (shown.length < list.length) {
+      printMuted(`还有 ${list.length - shown.length} 个没显示 · 输入 ls 看全部`);
+    }
   }
 
   function printFileList(project) {
@@ -478,7 +484,7 @@
   function printReadme(project) {
     const md = el('div', 'md');
     md.append(el('h2', 'md__title', `# ${project.slug}`));
-    md.append(el('p', 'md__desc', project.desc || '（没有描述）'));
+    md.append(el('p', 'md__desc', project.desc || '这个仓库还没有写描述。'));
 
     const list = el('ul', 'md__list');
     const item = (key, value) => {
@@ -1328,7 +1334,10 @@
     if (invited) printLine(`[ ok ] 你好，${guest} —— 提示符已经用上你的名字`, 'line--dim');
     if (!deepProject) {
       printMuted('试试 ls、cd <项目>、help —— 或者直接用鼠标点下面的项目名。');
-      if (CONFIG.autoLs !== false && PROJECTS.length) printProjectList({});
+      if (CONFIG.autoLs !== false && PROJECTS.length) {
+        const limit = CONFIG.autoLsLimit === 0 ? 0 : Number(CONFIG.autoLsLimit) || 6;
+        printProjectList({ limit });
+      }
     }
 
     routeFromHash();

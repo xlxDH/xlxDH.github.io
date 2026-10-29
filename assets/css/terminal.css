@@ -377,7 +377,7 @@ kbd {
 
 .row {
   display: grid;
-  grid-template-columns: minmax(0, 19ch) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 22ch) minmax(0, 1fr) auto;
   gap: 0 2ch;
   align-items: baseline;
   width: 100%;

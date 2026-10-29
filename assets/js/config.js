@@ -6,14 +6,14 @@
 window.CONFIG = {
   /* GitHub 用户名。留空 = 自动从 <user>.github.io 域名推断；
      本地预览时推断不出来，建议先填上你自己的用户名。 */
-  user: "",
+  user: "xlxDH",
 
   /* ---------- 展示 ---------- */
   name: "",                      // 留空则显示 user
-  role: "写代码 · 也写点别的",     // 一句话身份
+  role: "",                      // 一句话身份，例如 "ECJTU · 后端 / 全栈"
   tagline: "",                   // 追加在 role 后面，可留空
-  bio: "白天写前端，晚上折腾小工具。喜欢把想法做成能点的东西。",
-  location: "",                  // 例如 "Hangzhou, CN"
+  bio: "",                       // 自我介绍，whoami / about 会显示
+  location: "",                  // 例如 "Nanchang, CN"
   email: "",                     // 例如 "hi@example.com"
 
   /* 页头可点的链接。github 留空会自动指向 github.com/<user> */
@@ -28,6 +28,7 @@ window.CONFIG = {
   /* ---------- 交互 ---------- */
   autoJump: true,      // cd 进项目时，自动在新标签页打开仓库
   autoLs: true,        // 启动后自动执行一次 ls（首屏直接看到项目）
+  autoLsLimit: 6,      // 首屏最多列几个（0 = 全部；其余用 ls 展开）
   scanlines: true,     // CRT 扫描线
   theme: "auto",       // auto | dark | light
   promptUser: "visitor", // 访客默认名；访客可用 login <GitHub名> 换成自己的
@@ -37,8 +38,9 @@ window.CONFIG = {
   arcade: true,        // 关掉设 false（或 URL 加 ?arcade=off）
   arcadeIdle: 5000,    // 多少毫秒没有操作就自动开局
 
-  /* 不想展示的仓库（slug 或 name，小写） */
-  hidden: [],
+  /* 不想展示的仓库（slug 或 name，小写）
+     "-" 是个空仓库，ECJTU-22-C 是 GitHub 个人主页的 README 仓库，都不当项目展示 */
+  hidden: ["-", "ecjtu-22-c"],
 
   /* 自定义别名（也可以直接改这里） */
   aliases: {
