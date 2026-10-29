@@ -16,7 +16,9 @@ class Check(HTMLParser):
         for key in ['src', 'href']:
             value = attrs.get(key, '')
             if value.startswith('assets/'):
-                assert (root / value).is_file(), value
+                # 允许 ?v=... 之类的缓存参数，只检查真实文件路径
+                path = value.split('?', 1)[0].split('#', 1)[0]
+                assert (root / path).is_file(), value
 
 check = Check()
 check.feed((root / 'index.html').read_text(encoding='utf-8'))

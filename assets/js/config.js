@@ -11,7 +11,7 @@ window.CONFIG = {
   /* ---------- 展示 ---------- */
   name: "",                      // 留空则显示 user
   role: "",                      // 一句话身份，例如 "ECJTU · 后端 / 全栈"
-  tagline: "",                   // 追加在 role 后面，可留空
+  tagline: "大家都是亿亿级的生物大模型，总觉得自己会犯错是因为预训练数据太少了，发生了后训练发生灾难性遗忘，再训一下就好了૮₍ ˊᯅˋ₎ა", // 主页副标题
   bio: "",                       // 自我介绍，whoami / about 会显示
   location: "",                  // 例如 "Nanchang, CN"
   email: "",                     // 例如 "hi@example.com"
